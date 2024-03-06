@@ -15,13 +15,14 @@ from colorama import Fore, Back, Style
 from time import time
 import os
 import psutil # cpu, gpu and ram stats
-
+import logging, inspect
+logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
 from pyfiglet import Figlet
 header_fig = Figlet(font='graffiti')
 
 # Global Constants
 PID = os.getpid()
-print(Fore.RED + "PID = " + str(PID) + Style.RESET_ALL) 
+print(Fore.RED + "PID = " + str(PID) + Style.RESET_ALL, end="\n") 
 
 # Global variables
 #checkpt_count = 0
@@ -30,11 +31,18 @@ checkpt_dict = {} # Will track all checkpoint stats including time
 seen_files = [] # List of files that have been seen by the get_call_count function
 total_checkpoints = 0
 current_checkpoint = 0
-pbar = tqdm(total=0) # TQDM progress bar object
-pbar.set_description("Checkpt Progress")
+#pbar = tqdm(total=0) # TQDM progress bar object
+#pbar.set_description("Checkpt Progress")
 
-print = tqdm.write
+#print = tqdm.write
 
+def print_(string:str) -> None:
+    frame, fileName, line_number, function_name, lines, index = inspect.stack()[2]
+    pre = Fore.LIGHTMAGENTA_EX #Fore.BLACK + Back.WHITE
+    post = Style.RESET_ALL
+    logging.info(f"[{pre}{fileName}{post} : {pre}ln {line_number}{post} : {pre}{function_name}{post}{Style.RESET_ALL}] {string}")
+    return
+"""
 def set_tqdm(total:int):
     global pbar
     
@@ -43,7 +51,7 @@ def set_tqdm(total:int):
     #else:
     pbar.total = total
     pbar.refresh()
-
+"""
 def reset_chkpt():
     "Resets the global variable checkpoint_count to 0"
 
@@ -82,32 +90,36 @@ def check(*arguments):
             error. Error
     """
     global last_time, checkpt_dict, seen_files, total_checkpoints, current_checkpoint
-    end = "\n"
+    end = ""
 
     # Getting the Python file location of the calling function (to get the total count of the calls)
     namespace = sys._getframe(1).f_globals  # caller's globals
+    if '__file__' not in namespace.keys():
+        print("ERROR : You are probably trying to run PyChek from a Python Interactive session. This is currently not supported, try using in a Python script instead.")
+        exit()
+
     caller_path = namespace['__file__'] # Location of the calling python file
     
     call_count = get_call_count(caller_path)
     
     if call_count != -1:
         total_checkpoints += call_count
-        set_tqdm(total_checkpoints)
+        #set_tqdm(total_checkpoints)
         pass
     #if arguments[0] == "pass":
     #    end = "\r"
     
     if arguments[0] == "header":
         statement = Fore.YELLOW + "".join([str(header_fig.renderText(_)) for _ in arguments[1:]]) + Style.RESET_ALL
-        print(statement, end=end)
+        print("\n" + statement+end)
         return statement
     elif arguments[0] == "info":
         statement = Fore.BLUE + "INFO :\t" + Style.RESET_ALL + "".join([str(_) for _ in arguments[1:]])
-        print(statement, end=end)
+        print_(statement + end)
         return statement
     elif arguments[0] == "finish":
         statement = ">>>\t" + Back.GREEN + Fore.BLACK + " Program execution finished. " + Style.RESET_ALL + "\t<<<"
-        print(statement, end=end)
+        print_(statement + end)
         return statement
 
     # Time stats
@@ -128,8 +140,8 @@ def check(*arguments):
     for argument in arguments[1:]:
         statement += str(argument)
 
-    print("[ Check-" + str(current_checkpoint) + " ]\t" + fore_colour + status.upper() + Style.RESET_ALL + " : " + statement + "\t\t" + Fore.BLUE + "(t = " + str(round(time_taken,3)) + " s)" + Style.RESET_ALL, end=end)
-    pbar.update(1)
+    print_("[ Check-" + str(current_checkpoint) + " ]\t" + fore_colour + status.upper() + Style.RESET_ALL + " : " + statement + "\t\t" + Fore.BLUE + "(t = " + str(round(time_taken,3)) + " s)" + Style.RESET_ALL + end)
+    #pbar.update(1)
     return statement
 
 # TODO : RAM, CPU, GPU monitoring checks and warnings

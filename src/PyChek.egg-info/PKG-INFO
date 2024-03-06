@@ -1,3 +1,13 @@
+Metadata-Version: 2.1
+Name: PyChek
+Version: 0.1
+Summary: pyChek : A Smarter Print for Execution Checks
+Home-page: https://pypi.org/project/pychek/
+Author: Aakash Singh Bais
+Author-email: xbais@duck.com
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # pyChek : A Smarter Print for Execution Checks
 A Python Library to Track Program Progress
 ![2023-11-01_03-33](https://github.com/aakashsinghbais/pyprodigy/assets/56718090/b5eb78db-c61f-4e37-8933-73fe9a7ee363)
