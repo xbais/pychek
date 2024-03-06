@@ -7,8 +7,8 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 setup(name='PyChek',
-      version='0.1',
-      description='pyChek : A Smarter Print for Execution Checks',
+      version='0.1.1',
+      description='PyChek : A Smarter Logger',
       long_description_content_type='text/markdown',
       long_description=long_description,
       author='Aakash Singh Bais',

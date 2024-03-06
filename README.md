@@ -1,6 +1,6 @@
-# pyChek : A Smarter Print for Execution Checks
-A Python Library to Track Program Progress
-![2023-11-01_03-33](https://github.com/aakashsinghbais/pyprodigy/assets/56718090/b5eb78db-c61f-4e37-8933-73fe9a7ee363)
+# pyChek : A Smarter Logger
+Python Library to Track Program Progress
+![pychek-test](https://github.com/xbais/pychek/assets/56718090/154fa3b4-6ca9-4e35-8b84-546e5354d182)
 
 # Dependencies
 Please make sure that the following Python packages are installed on your system / virtual environment : tqdm, colorama, pyfiglet, psutil
