@@ -40,7 +40,7 @@ def print_(string:str) -> None:
     frame, fileName, line_number, function_name, lines, index = inspect.stack()[2]
     pre = Fore.LIGHTMAGENTA_EX #Fore.BLACK + Back.WHITE
     post = Style.RESET_ALL
-    logging.info(f"[{pre}{fileName}{post} : {pre}ln {line_number}{post} : {pre}{function_name}{post}{Style.RESET_ALL}] {string}")
+    logging.info(f"[{pre}{fileName}{post} : {pre}ln {line_number}{post} : {pre}{function_name}{post}{Style.RESET_ALL}] \n{string}\n")
     return
 """
 def set_tqdm(total:int):
@@ -114,7 +114,8 @@ def check(*arguments):
         print("\n" + statement+end)
         return statement
     elif arguments[0] == "info":
-        statement = Fore.BLUE + "INFO :\t" + Style.RESET_ALL + "".join([str(_) for _ in arguments[1:]])
+        current_checkpoint += 1
+        statement = f"[ Chk {str(current_checkpoint)}/{str(total_checkpoints)} ]\t" + " ℹ️ " + Back.CYAN + Fore.BLACK + " INFO " + Style.RESET_ALL + " :\t" + Fore.CYAN + "".join([str(_) for _ in arguments[1:]]) + Style.RESET_ALL
         print_(statement + end)
         return statement
     elif arguments[0] == "finish":
@@ -131,16 +132,20 @@ def check(*arguments):
     current_checkpoint += 1
     status = arguments[0].lower()
     status_values = ["pass", "warn", "error"]
-    colour_values = [Fore.GREEN, Fore.YELLOW, Fore.RED]
+    status_symbols = ["✅", "⚠️", "❌"]
+    bullet_colour_values = [Back.GREEN + Fore.BLACK, Back.YELLOW + Fore.BLACK, Back.RED + Fore.WHITE]
+    text_colour_values = [Fore.GREEN, Fore.YELLOW, Fore.RED]
 
     assert status in status_values
 
-    fore_colour = colour_values[status_values.index(status)]
+    bullet_colour = bullet_colour_values[status_values.index(status)]
+    text_colour = text_colour_values[status_values.index(status)]
+    status_symbol = status_symbols[status_values.index(status)]
 
     for argument in arguments[1:]:
         statement += str(argument)
 
-    print_("[ Check-" + str(current_checkpoint) + " ]\t" + fore_colour + status.upper() + Style.RESET_ALL + " : " + statement + "\t\t" + Fore.BLUE + "(t = " + str(round(time_taken,3)) + " s)" + Style.RESET_ALL + end)
+    print_(f"[ Chk {str(current_checkpoint)}/{str(total_checkpoints)} ]\t" + f" {status_symbol} " + bullet_colour + " " + status.upper() + " " + Style.RESET_ALL + " :\t" + text_colour + statement + Style.RESET_ALL + "\t\t" + Fore.BLUE + "(t = " + str(round(time_taken,3)) + " s)" + Style.RESET_ALL + end)
     #pbar.update(1)
     return statement
 
