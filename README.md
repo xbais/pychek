@@ -23,5 +23,11 @@ from pychek import check
 # Note:
 **PyChek will not work in interactive Python shell.**
 
+# TODO:
+1. Add unique hashes to every check point (based on the location of the file and the line number where it belongs).
+2. Make an execution graph with these unique checkpoints as nodes.
+3. Generate the stats for time taken for the code to traverse every edge in the graph (average execution time from one unique checkpoint to another)
+4. Show this graph and save it.
+
 # Updates
 The package will soon be uploaded for PyPI

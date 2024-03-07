@@ -40,7 +40,7 @@ def print_(string:str) -> None:
     frame, fileName, line_number, function_name, lines, index = inspect.stack()[2]
     pre = Fore.LIGHTMAGENTA_EX #Fore.BLACK + Back.WHITE
     post = Style.RESET_ALL
-    logging.info(f"[{pre}{fileName}{post} : {pre}ln {line_number}{post} : {pre}{function_name}{post}{Style.RESET_ALL}] \n{string}\n")
+    logging.info(f"[{pre}file://{fileName}{post} : {pre}ln {line_number}{post} : {pre}{function_name}{post}{Style.RESET_ALL}] \n{string}\n")
     return
 """
 def set_tqdm(total:int):
